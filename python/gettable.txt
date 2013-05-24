@@ -1,0 +1,10 @@
+def get_tables(request):
+   dbname = request.GET['db'] + ".db"
+   conn = sqlite3.connect(dbname)
+   cursor = conn.cursor()
+   tables = cursor.execute("select name FROM sqlite_master WHERE type = 'table'")
+   tab = []
+   for row in tables:
+      tab.append(row)
+   json = simplejson.dumps(tab)
+   return HttpResponse(json, mimetype='application/json')

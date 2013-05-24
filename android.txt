@@ -1,0 +1,12 @@
+<html>
+<head>
+<script type = "text/javascript" src = "logic.js">
+</script>
+<style></style>
+</head>
+<body> 
+<input type = 'button' id = 'bt0'>
+<p id = 'hw0'>Hello World Logic</p>
+<!---append code here---!>
+ </body>
+</html>

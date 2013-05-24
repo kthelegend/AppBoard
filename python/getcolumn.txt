@@ -1,0 +1,10 @@
+def get_columns(request):
+   dbname = request.GET['db'] + ".db"
+   tbname = request.GET['tb']
+   conn = sqlite3.connect(dbname)
+   cursor = conn.cursor()
+   cmd = "select * from " + tbname
+   cursor.execute(cmd)
+   columns = cursor.description
+   json = simplejson.dumps(columns)
+   return HttpResponse(json, mimetype='application/json')

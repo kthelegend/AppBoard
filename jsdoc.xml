@@ -1,0 +1,9 @@
+<doc>
+<command name = "alert" description = "An alert box is often used if you want to make sure information comes through to the user , window.alert(sometext);"/>
+
+<command name = "parseint" description="The parseInt() function parses a string and returns an integer. parseInt(string, radix); radix -Optional. A number (from 2 to 36) that represents he numeral system to be used"/>
+
+<command name = "return" description="Sometimes you want your function to return a value back to where the call was made. This is possible by using the return statement. When using the return statement, the function will stop executing, and return the specified value."/>
+
+<command name = "function" description="A function is a block of code that will be executed when someone calls it"/>
+</doc>

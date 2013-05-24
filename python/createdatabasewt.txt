@@ -1,0 +1,19 @@
+def create_dbwithtable(request):
+    dbname = request.GET['db'] + ".db"
+    tbname = request.GET['tb']
+    conn = sqlite3.connect(dbname)
+    cursor = conn.cursor()
+    tbcol = []
+    jsonr = request.GET['tc']
+    jsonar = json.loads(jsonr)
+    cm = ''
+    for el in jsonar:
+       op = el.split('-')
+       cname = op[0]
+       ctype = op[1]
+       cm = cm + cname + " " + ctype + ","
+    cm = cm[:-1]
+    cmd = 'CREATE TABLE ' + tbname + '(' + cm + ')'
+    cursor.execute(cmd)
+    conn.commit()
+    return HttpResponse(cmd)

@@ -1,0 +1,19 @@
+def insert_table(request):
+   dbname = request.GET['db'] + ".db"
+   tbname = request.GET['tb']
+   conn = sqlite3.connect(dbname)
+   cursor = conn.cursor()
+   jsonr = request.GET['tc']
+   jsonar = json.loads(jsonr)
+   cm = ''
+   for el in jsonar:
+       op = el.split('-')
+       cname = op[0]
+       cvalue = op[1]
+       cm = cm + "'" + cvalue + "'" + ","
+   cm = cm[:-1]
+   cmd = 'INSERT INTO ' + tbname + ' VALUES (' + cm + ')'
+   cursor.execute(cmd)
+   conn.commit()
+   res = "SUCCESS"
+   return HttpResponse(res
