@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta charset="utf-8">
+	<title>AppBoard</title>
+	
+<!--css for jQuery pepper theme-->
+	<link href="../css/pepper-grinder/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css">
+	
+<!--script for jQuery and widgets-->
+	<script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="../js/jquery-ui-1.10.2.custom.js" ></script>
+	<script type="text/javascript" src="../development-bundle/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="../development-bundle/ui/jquery.ui.tabs.js"></script>
+	<script type="text/javascript" src="../development-bundle/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="../development-bundle/ui/jquery.ui.button.js"></script>
+	<script type="text/javascript" src="../development-bundle/ui/jquery.ui.autocomplete.js"></script>
+	
+<!--script for apphouse modularization-->
+	<script type="text/javascript" src="../HomeScript.js"></script>
+	
+<!--css for apphouse modularization-->
+	<link href="../HomeStyle.css" rel="stylesheet" type="text/css">
+	
+<!--script for logics-->
+	<script type="text/javascript" src="../logics/addthreeno.js"></script>
+	<script type="text/javascript" src="../logics/addtwono.js"></script>
+	<script type="text/javascript" src="../logics/camcapture.js"></script>
+	<script type="text/javascript" src="../logics/dividetwono.js"></script>
+	<script type="text/javascript" src="../logics/helloworld.js"></script>
+	<script type="text/javascript" src="../logics/himsg.js"></script>
+	<script type="text/javascript" src="../logics/multiplytwono.js"></script>
+	<script type="text/javascript" src="../logics/startriangle.js"></script>
+	<script type="text/javascript" src="../logics/strcon.js"></script>
+	<script type="text/javascript" src="../logics/strconreturn.js"></script>
+	<script type="text/javascript" src="../logics/tbinsert.js"></script>
+	<script type="text/javascript" src="../logics/select.js"></script>
+	
+<!--script and style for jQuery context menu plugin-->	
+	<script src="../src/jquery.ui.position.js" type="text/javascript"></script>
+    <script src="../src/jquery.contextMenu.js" type="text/javascript"></script>
+    <link href="../src/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+	
+<!--script for javascript mouseposition used for documentation-->	
+	<script type = "text/javascript">
+		var IE = document.all?true:false
+		if (!IE) document.captureEvents(Event.MOUSEMOVE)
+		document.onmousemove = getMouseXY;
+		var tempX = 0
+		var tempY = 0
+			function getMouseXY(e) {
+				if (IE) { // grab the x-y pos.s if browser is IE
+				tempX = event.clientX + document.body.scrollLeft
+				tempY = event.clientY + document.body.scrollTop
+				} else {  // grab the x-y pos.s if browser is NS
+				tempX = e.pageX
+				tempY = e.pageY
+				}  
+			if (tempX < 0){tempX = 0}
+			if (tempY < 0){tempY = 0}  
+			window.MouseX = tempX
+			window.MouseY = tempY
+			return true
+			}
+	</script>
+
+<!--script for getting code from generated file on tab click-->
+	<script type = "text/javascript">
+		$(document).ready(function() {
+		
+		$(".focus").focusin(function(){alert('clicked');});	
+	    $('#androidtab').bind('click',function()
+	    {
+	    if($('tabs').context.activeElement.hash == "#acmodetab")
+	    {
+			acode();
+	    }
+		else if($('tabs').context.activeElement.hash == "#almodetab")
+		{
+			alogic();
+		}
+		else if($('tabs').context.activeElement.hash == "#pymodetab")
+		{
+			pycode();
+		}
+     	});
+			
+		//code for changing the layout of work area
+		$( "#radio" ).buttonset();
+		$("#radio input").bind('click',function(){
+		var rid = $("#radio :radio:checked").attr('id');
+		if(rid == 'radio1')
+		{
+		document.getElementById('admodetab').style.backgroundImage = "url('images/android.png')";
+		document.getElementById("adroppable").style.color="white";
+		}
+		else if(rid == 'radio2')
+		{
+		document.getElementById('admodetab').style.backgroundImage = "url('images/iphone.png')";
+		document.getElementById("adroppable").style.color="black";
+		}
+		else
+		{
+		document.getElementById('admodetab').style.backgroundImage = "url('images/windows.png')";
+		document.getElementById("adroppable").style.color="white";
+		}
+		});
+		
+		
+		//code for changing the theme (background)
+		$( "#radiotheme" ).buttonset();
+		$("#radiotheme input").bind('click',function(){
+		var rid = $("#radiotheme :radio:checked").attr('id');
+		if(rid == 'radiopencil')
+		{
+		var body = document.getElementsByTagName('body')[0];
+		body.style.backgroundImage = 'url(images/back.jpg)';
+		document.getElementById("footer").style.color="black";
+		}
+		else if(rid == 'radioteddy')
+		{
+		var body = document.getElementsByTagName('body')[0];
+		body.style.backgroundImage = 'url(images/teddy.jpg)';
+		document.getElementById("footer").style.color="black";
+		}
+		else if(rid == 'radiosnow')
+		{
+		var body = document.getElementsByTagName('body')[0];
+		body.style.backgroundImage = 'url(images/snow.jpg)';
+		document.getElementById("footer").style.color="white";
+		}
+		else if(rid == 'radiostars')
+		{
+		var body = document.getElementsByTagName('body')[0];
+		body.style.backgroundImage = 'url(images/stars.jpg)';
+		document.getElementById("footer").style.color="white";
+		}
+		else if(rid == 'radiothunder')
+		{
+		var body = document.getElementsByTagName('body')[0];
+		body.style.backgroundImage = 'url(images/thunder.gif)';
+		document.getElementById("footer").style.color="white";
+		}
+		});
+		
+		});
+		
+	</script>
+	
+<!--script for ... etc-->
+	<script type = "text/javascript">
+	
+		//code to call the python for getting the documentation for selected command
+		function getdocumentation()
+		{
+		gdhttp = new XMLHttpRequest();
+		if(window.XMLHttpRequest) {
+		gdhttp = new XMLHttpRequest();
+		}
+		else if(window.ActiveXObject){
+		gdhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		var url = "http://localhost:8000/documentation/?cname=" + document.selection.createRange().htmlText;;
+		gdhttp.open("GET",url,true)
+		gdhttp.onreadystatechange=processdoc;
+		gdhttp.send(null);
+		}
+	
+		//call back function for documentation result and submit result to UI
+		function processdoc()
+		{
+		if (gdhttp.readyState == 4 && gdhttp.status == 200) {
+		document.getElementById('doccontent').innerText = gdhttp.responseText;
+		$("#documentation_form").fadeIn(1000);
+		docpositionPopup();
+		$("#docclose").click(function(){$("#documentation_form").fadeOut(500); });
+		} else {
+		}
+		}
+	
+		//function to clear the generated text file
+		function pageload()
+		{
+		window.count = 0;
+		window.logicid = [];
+		plhttp = new XMLHttpRequest();
+		if(window.XMLHttpRequest) {
+		plhttp = new XMLHttpRequest();
+		}
+		else if(window.ActiveXObject){
+		plhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		var url = "http://localhost:8000/pageload/";
+		plhttp.open("GET",url,true)
+		plhttp.send(null);
+		}
+	
+		//function to get properties of an element up on focus	
+		function myFunction()
+		{
+		window.focuselem = document.activeElement.id ;
+		phttp = new XMLHttpRequest();
+		if (window.XMLHttpRequest) {
+		phttp = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+		phttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		var url = "http://localhost:8000/aprop/?elem=" + document.activeElement.id ;
+		this.uiid = "";
+		phttp.open("GET", url, true)
+		phttp.onreadystatechange=processpResult;
+		phttp.send(null);
+		}
+	
+		//call back function for property result and submit json result to UI
+		function processpResult()
+		{
+		if (phttp.readyState == 4 && phttp.status == 200) {
+		var json = eval('(' + phttp.responseText +')');
+		document.getElementById('elemtyp').innerHTML = json.type;
+		document.getElementById('elemid').innerHTML = json.id;
+		} else {
+		}
+		}
+	
+		//function to get ids of an element up on logic drop	
+		function get_ids()
+		{
+		gidhttp = new XMLHttpRequest();
+		if (window.XMLHttpRequest) {
+		gidhttp = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+		gidhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		var url = "http://localhost:8000/getids/";
+		gidhttp.open("GET", url, true)
+		gidhttp.onreadystatechange=processgetids;
+		gidhttp.send(null);
+		}
+	
+		//call back function for id result and submit json result to UI
+		function processgetids()
+		{
+		if (gidhttp.readyState == 4 && gidhttp.status == 200) {
+		var json = eval('(' + gidhttp.responseText +')');
+		$.each(json, function(i, option) { 
+		for (var i=0;i<window.logicid.length;i++)
+		{
+		$('#' + window.logicid[i]).append($('<option/>').attr("value", option).text(option));
+		}
+		});
+		} 
+		}
+
+		//function code to update the UI element property
+		function updateandprop()
+		{
+		var eid = document.getElementById("elemid").innerHTML;
+		var etype = document.getElementById("elemtyp").innerHTML;
+		var ename = document.getElementById("elemname").value;
+		var etext = document.getElementById("elemtext").value;
+		document.getElementById(eid).value = etext;
+		uphttp = new XMLHttpRequest();
+		if (window.XMLHttpRequest) {
+		uphttp = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+		uphttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		var url = "http://localhost:8000/updateaprop/?id=" + eid + "&type=" + etype + "&name=" + ename + "&text=" + etext;
+		uphttp.open("GET", url, true)
+		uphttp.send(null);
+		}
+	
+	</script>
+	
+<!--style for toolbar1(mode like play or design)-->
+	<style>
+	#toolbar1 {
+		padding: 4px;
+		display: inline-block;
+	}
+	/* support: IE7 */
+	*+html #toolbar1 {
+		display: inline;
+	}
+	</style>
+	
+	<style>
+	#toolbar2 {
+		padding: 4px;
+		display: inline-block;
+	}
+	/* support: IE7 */
+	*+html #toolbar2 {
+		display: inline;
+	}
+	</style>
+	
+	<style>
+	#toolbar3 {
+		padding: 4px;
+		display: inline-block;
+	}
+	/* support: IE7 */
+	*+html #toolbar3 {
+		display: inline;
+	}
+	</style>
+	
+<!--script for positioning the popups-->
+	<script type="text/javascript">
+		function positionPopup(){
+		if(!$("#overlay_form").is(':visible')){
+		return;
+		}
+		$("#overlay_form").css({
+		left: ($(window).width() - $('#overlay_form').width()) / 2,
+		top: ($(window).width() - $('#overlay_form').width()) / 7,
+		position:'absolute'
+		});
+		}
+		$(window).bind('resize',positionPopup);
+	</script>
+	
+<!--script for documentation popup-->
+	<script type="text/javascript">
+		function docpositionPopup(){
+		if(!$("#documentation_form").is(':visible')){
+		return;
+		}
+		$("#documentation_form").css({
+		left:(window.MouseX + 100),
+		top:(window.MouseY - 125),
+		position:'absolute'
+		});
+		}
+		$(window).bind('resize',docpositionPopup);
+	</script>
+	
+	<script type="text/javascript">
+		//helloworld
+		function hwpositionPopup(){
+		if(!$("#helloworld_form").is(':visible')){
+		return;
+		}
+		$("#helloworld_form").css({
+		left: ($(window).width() - $('#helloworld_form').width()) / 2,
+		top: ($(window).width() - $('#helloworld_form').width()) / 7,
+		position:'absolute'
+		});
+		}
+		$(window).bind('resize',hwpositionPopup);
+	
+		//add two number
+		function a2positionPopup(){
+		if(!$("#addtwono_form").is(':visible')){
+		return;
+		}
+		$("#addtwono_form").css({
+		left: ($(window).width() - $('#addtwono_form').width()) / 2,
+		top: ($(window).width() - $('#addtwono_form').width()) / 7,
+		position:'absolute'
+		});
+		}
+		$(window).bind('resize',a2positionPopup);
+	
+		//add three numbers
+		function a3positionPopup(){
+		if(!$("#addthreeno_form").is(':visible')){
+		return;
+		}
+		$("#addthreeno_form").css({
+		left: ($(window).width() - $('#addthreeno_form').width()) / 2,
+		top: ($(window).width() - $('#addthreeno_form').width()) / 7,
+		position:'absolute'
+		});
+		}
+		$(window).bind('resize',a3positionPopup);
+	
+		//database
+		function dbpositionPopup(){
+		if(!$("#database_form").is(':visible')){
+		return;
+		}
+		$("#database_form").css({
+		left: ($(window).width() - $('#database_form').width()) / 2,
+		top: ($(window).width() - $('#database_form').width()) / 7,
+		position:'absolute'
+		});
+		}
+		$(window).bind('resize',dbpositionPopup);
+	
+	//position the logic bind popup at the center of the page
+	function tbinsertPopup(){
+	if(!$("#tbinsert_form").is(':visible')){
+	return;
+	}
+	$("#tbinsert_form").css({
+	left: ($(window).width() - $('#tbinsert_form').width()) / 2,
+	top: ($(window).width() - $('#tbinsert_form').width()) / 7,
+	position:'absolute'
+	});
+	}
+	//maintain the popup at center of the page when browser resized
+	$(window).bind('resize',tbinsertPopup);
+	
+	
+	//position the logic bind popup at the center of the page
+	function selectpositionPopup(){
+	if(!$("#select_form").is(':visible')){
+	return;
+	}
+	$("#select_form").css({
+	left: ($(window).width() - $('#select_form').width()) / 2,
+	top: ($(window).width() - $('#select_form').width()) / 7,
+	position:'absolute'
+	});
+	}
+	//maintain the popup at center of the page when browser resized
+	$(window).bind('resize',selectpositionPopup);
+	</script>
+	
+<!--style for logic bind popup-->
+	<style>
+	#documentation_form,#overlay_form,#helloworld_form,#addtwono_form,#addthreeno_form,#database_form,#tbinsert_form,#select_form{
+	position: absolute;
+	padding: 35px;
+	width: 280px;
+	height: 190px;
+	background-image: url('images/popupform.png');
+	}
+	
+	</style>
+	
+
+	
+<!--style for logic bind popup-->
+	<script>
+	$(function() {
+	
+		$( "#savel" ).button({
+			text: false,
+			icons: {
+				primary: "ui-icon-disk"
+			}
+		})
+		.click(function() { });
+	
+		$( "#savep" ).button({
+			text: false,
+			icons: {
+				primary: "ui-icon-disk"
+			}
+		})
+		.click(function() { updateandprop(); });
+		
+		$( "#refresh" ).button({
+			text: false,
+			icons: {
+				primary: "ui-icon-refresh"
+			}
+		})
+		.click(function() { document.location.reload(true);});
+		
+		$( "#save" ).button({
+			text: false,
+			icons: {
+				primary: "ui-icon-disk"
+			}
+		})
+		.click(function() {	document.execCommand('SaveAs',false,'somexml.xml'); });
+		
+		$( "#delete" ).button({
+			text: false,
+			icons: {
+				primary: "ui-icon-trash"
+			}
+		})
+		.click(function() {	});
+		
+		$( "#play" ).button({
+			text: false,
+			icons: {
+				primary: "ui-icon-play"
+			}
+		})
+		.click(function() {
+			var options;
+			if ( $( this ).text() === "play" ) {
+				options = {
+					label: "pause",
+					icons: {
+						primary: "ui-icon-pause"
+					}
+					//window.mode = "play";
+				};
+			} else {
+				options = {
+					label: "play",
+					icons: {
+						primary: "ui-icon-play"
+					}
+					//window.mode = "design";
+				};
+			}
+			$( this ).button( "option", options );
+		});
+	
+	});
+	</script>	
+	
+	<script>
+	
+	
+	
+
+	</script>
+	
+<!--style for context menu-->	
+	<script type="text/javascript" class="showcase">
+	$(function(){
+    $.contextMenu({
+        selector: '.context-menu-one', 
+        callback: function(key, options) {
+            var m = "clicked: " + key;
+           // window.console && console.log(m) || alert(m); 
+		   if(key=='delete')
+		   {
+		   var element = document.getElementById(window.focuselem);
+		   element.parentNode.removeChild(element);
+		   deleteuielement();
+		   }
+        },
+        items: {
+            "edit": {name: "Edit", icon: "edit"},
+            "cut": {name: "Cut", icon: "cut"},
+            "copy": {name: "Copy", icon: "copy"},
+            "paste": {name: "Paste", icon: "paste"},
+            "delete": {name: "Delete", icon: "delete"},
+            "sep1": "---------",
+            "quit": {name: "Quit", icon: "quit"}
+        }
+    });
+    $('.context-menu-one').on('click', function(e){
+        console.log('clicked', this);
+    })
+	});
+    </script>
+
+</head>
+
+<!--call page load to clear generated file upon refresh-->
+<body onload="pageload()" background="images\back.jpg">
+
+<!--table displaying heading and mode controls-->
+	<table border='0' width='100%'>
+	<tr>
+	<td width="6%"><img src='images\logo.png' height="65px" width="80px"></td>
+	<td width="20%">
+	<h1 style="font-family:arial;color:white;">Welcome to AppBoard !</h1>
+	</td>
+	<td width="2%">
+<!--<div id="toolbar1" class="ui-widget-header ui-corner-all">-->
+	<button id="play">play</button></td><td width="2%">
+	<button id="refresh">refresh</button></td><td width="2%">
+	<button id="save">save</button></td><td width="2%">
+	<button id="delete">delete</button></td><td width="13%">
+	<div id="radio" align="right">
+		<input type="radio" id="radio1" name="radio" /><label for="radio1">Android</label>
+		<input type="radio" id="radio2" name="radio"  /><label for="radio2">iPhone</label>
+		<input type="radio" id="radio3" name="radio" /><label for="radio3">Windows</label>
+	</div></td>
+	<td align="center" width="40%">
+	
+	<div id="radiotheme" align="right">
+		<input type="radio" id="radiopencil" name="radio" /><label for="radiopencil">Pencil</label>
+		<input type="radio" id="radioteddy" name="radio"  /><label for="radioteddy">Teddy</label>
+		<input type="radio" id="radiosnow" name="radio" /><label for="radiosnow">Snow</label>
+		<input type="radio" id="radiostars" name="radio"  /><label for="radiostars">Stars</label>
+		<input type="radio" id="radiothunder" name="radio"  /><label for="radiothunder">Thunder</label>
+	</div>
+	
+	
+	</td>
+	</div>
+	</td>
+	
+	
+	</tr>
+	</table>
+	
+<!--table used to control all three panels in same align even after minimize and maximize the page-->	
+	<table width="100%">
+	<tr>
+	<td width="15%" valign="top">
+	
+<!--toolbar displaying controls and logics on left side-->
+	<div id="toolbar">
+	<h3>Control</h3>
+	<div id="control">
+		<ul>
+			<li><div id="inptb1"><img src="images\toolbar\textbox.png"/></div></li>
+			<li><div id="brtb1"><img src="images\toolbar\break.png"/></div></li>
+			<li><div id="btntb1"><img src="images\toolbar\button.png"/></div></li>
+			<li><div id="rdtb1"><img src="images\toolbar\radio.png"/></div></li>
+			<li><div id="chbtb1"><img src="images\toolbar\checkbox.png"/></div></li>
+			<li><div id="cmbtb1"><img src="images\toolbar\combo.png"/></div></li>
+			<li><div id="lbltb1"><img src="images\toolbar\label.png"/></div></li>
+			<li><div id="pwdtb1"><img src="images\toolbar\password.png"/><div></li>
+			<li><div id="clntb1"><img src="images\toolbar\calendar.png"/></div></li>
+			<li><div id="pgbtb1"><img src="images\toolbar\progress.png"/></div></li>
+			<li><div id="imgtb1"><img src="images\toolbar\image.png"/></div></li>
+			<li><div id="divtb1"><img src="images\toolbar\div.png"/></div></li>
+			<li><div id="tabtb1"><img src="images\toolbar\table.png"/></div></li>
+			<li><div id="dbstb1"><img src="images\toolbar\database.png"/></div></li>
+			<li><div id="seltb1"><img src="images\toolbar\select.png"/></div></li>
+			<li><div id="instb1"><img src="images\toolbar\insert.png"/></div></li>
+			<li><div id="updtb1"><img src="images\toolbar\update.png"/></div></li>
+			<li><div id="deltb1"><img src="images\toolbar\delete.png"/></div></li>
+		</ul>
+	</div>
+	<h3>Logic</h3>
+	<div>
+	<ul>
+		<li><div id="helloworld">Hello World!!</div></li>
+		<li><div id="himsg">Hi Message</div></li>
+		<li><div id="strcon">String Concatination</div></li>
+		<li><div id="strconreturn">String Concatination with return</div></li>
+		<li><div id="addtwono">Add two numbers</div></li>
+		<li><div id="addthreeno">Add three numbers</div></li>
+		<li><div id="dividetwono">Divide two numbers</div></li>
+		<li><div id="multiplytwono">Multiply two numbers</div></li>
+	</ul>
+	</div>
+	</div>
+	
+	</td>
+	<td width="65%">
+	
+<!--central panel called as application tab containing all tabs of androis, iphone and windows-->
+	
+
+	<!--android tab containing three other tabs inside for code, logic, and design-->
+	<div id="androidtab">
+		<div id="amodetab">
+			<ul>
+				<li><a href="#admodetab">Design</a></li>
+				<li><a href="#acmodetab">Code.html</a></li>
+				<li><a href="#almodetab">Logic.js</a></li>
+				<li><a href="#phmodetab">Logic.php</a></li>
+				<li><a href="#pymodetab">Logic.py</a></li>
+				<li><a href="#cmodetab">Logic.c</a></li>
+				<li><a href="#jamodetab">Logic.java</a></li>
+				
+			</ul>
+			<div id="admodetab">
+				<div id="adroppable" class="context-menu-one box menu-1"></div>
+			</div>
+			<div id="acmodetab">
+				<textarea id="acode" width="95%" readonly>code</textarea>
+			</div>
+			<div id="almodetab">
+				<textarea id="alogic" width="95%" onselect="getdocumentation()" readonly>logic</textarea>
+			</div>
+			<div id="phmodetab">
+				<textarea id="phlogic" width="95%" onselect="getdocumentation()" readonly>logic</textarea>
+			</div>
+			<div id="pymodetab">
+				<textarea id="pylogic" width="95%" onselect="getdocumentation()" readonly>logic</textarea>
+			</div>
+			<div id="cmodetab">
+				<textarea id="clogic" width="95%" onselect="getdocumentation()" readonly>logic</textarea>
+			</div>
+			<div id="jamodetab">
+				<textarea id="jalogic" width="95%" onselect="getdocumentation()" readonly>logic</textarea>
+			</div>
+			
+		</div>
+	</div>
+	
+	
+
+    </td>
+	<td width="15%" valign="top">  
+	
+<!--panel displaying property and style of a control on right side-->
+	<div id="settings">
+	<h3>Property</h3> 
+	<div>
+	<table border = '0' width = '100%'>
+	<tr><td><h2>Elements</h2></td><td align="right">
+	
+	<div id="toolbar2" class="ui-widget-header ui-corner-all">
+	<button id="savep">save</button>
+	</div>
+		
+	</td></tr>
+	<tr><td><b>ID</b></td><td><div id="elemid">id</div></td></tr>
+	<tr><td><b>TYPE</b></td><td><div id="elemtyp">type</div></td></tr>
+	<tr><td><b>NAME</b></td><td><input type="text" id="elemname"></input></td></tr>
+	<tr><td><b>TEXT</b></td><td><input type="text" id="elemtext"></input></td></tr>
+	</table>
+	<hr>
+	
+	<table border = '0' width = '100%'>
+	<tr><td><h2>Logics</h2></td><td align="right">
+	
+	<div id="toolbar3" class="ui-widget-header ui-corner-all">
+	<button id="savel">save</button>
+	</div>
+		
+	</td></tr>
+	<tr><td><b>NAME</b></td><td><div id="logicname">name</div></td></tr>
+	</table>
+	
+	
+	</div>
+	<h3>Style</h3>
+	<div>
+	</div>
+	</div>
+	
+	</td>
+	</tr>
+	</table>
+	
+<!--pop up for logic documentation -->
+
+	<form id='documentation_form' style='display:none'>
+     <div id='doc'>Documentation</div><br>
+	 <div id='doccontent'></div>
+	 <input type="button" value="close" id="docclose">
+	</form>
+
+<footer align="center" id="footer">
+<h2>Copyright © 2013 Nevets, Inc. </h2>
+</footer>
+
+</body>
+</html>

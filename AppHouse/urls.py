@@ -16,11 +16,16 @@ from AppHouseBackend.views import create_dbwithtable
 from AppHouseBackend.views import insert_table
 from AppHouseBackend.views import select_table
 from django.contrib import admin
+
+from django.views.generic import TemplateView
+
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-     (r'^$',main_page), 
+     (r'^$',main_page),
+     (r'^appboard/',TemplateView.as_view(template_name='Index.html')),
      (r'^android/',android_page),
      (r'^getids/',get_ids),                 
      (r'^pageload/',page_load),

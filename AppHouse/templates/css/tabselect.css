@@ -1,0 +1,5 @@
+.status-message {
+position:absolute; right:3px; top:4px; margin:0;
+padding:11px 8px 10px; font-size:11px;
+background-color:#ffffff; border:1px solid #aaaaaa;
+}
