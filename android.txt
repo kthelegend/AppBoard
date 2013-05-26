@@ -5,6 +5,11 @@
 <style></style>
 </head>
 <body> 
+<input type = 'text' id = 'tb0'>
+<input type = 'text' id = 'tb1'>
+<input type = 'button' id = 'bt0'>
+<input type = 'text' id = 'tb2'>
+<p id = 'a20'>Add two number Logic</p>
 <!---append code here---!>
  </body>
 </html>

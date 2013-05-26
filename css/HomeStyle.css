@@ -1,0 +1,19 @@
+	body{font: 62.5% "Trebuchet MS", sans-serif;}
+	.demoHeaders {margin-top: 2em;}
+
+	#wmodetab{width: 99%; align:center; height: 665px }
+	#ipmodetab{width: 99%; align:center; height: 665px }
+	#amodetab{width: 99%; align:center; height: 665px }
+	#wcode{resize: none; width:99.5%; height:600px }
+	#ipcode{resize: none; width:99.5%; height:600px }
+	#acode{resize: none; width:99.5%; height:600px }
+	#alogic{resize: none; width:99.5%; height:600px }
+	#phlogic{resize: none; width:99.5%; height:600px }
+	#pylogic{resize: none; width:99.5%; height:600px }
+	#clogic{resize: none; width:99.5%; height:600px }
+	#jalogic{resize: none; width:99.5%; height:600px }
+	#admodetab{background-image: url('/static/images/android.png');height:600px}
+	#ipdmodetab{background-image: url('/static/images/iphone.png');height:600px}
+	#wdmodetab{background-image: url('/static/images/windows.png');height:600px}
+	#adroppable{position: absolute;width: 26%; height: 440px; padding: 0.5em; float: left; margin-left:340px;margin-top:23px;color:white;}
+

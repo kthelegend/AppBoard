@@ -19,6 +19,10 @@ from django.contrib import admin
 
 from django.views.generic import TemplateView
 
+from django.conf import settings
+
+import os
+static = os.path.join(os.path.dirname(__file__), 'static')
 
 admin.autodiscover()
 
@@ -26,6 +30,13 @@ urlpatterns = patterns('',
     # Examples:
      (r'^$',main_page),
      (r'^appboard/',TemplateView.as_view(template_name='Index.html')),
+
+     
+   
+                       
+     (r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL,'show_indexes': True }),
+
+
      (r'^android/',android_page),
      (r'^getids/',get_ids),                 
      (r'^pageload/',page_load),

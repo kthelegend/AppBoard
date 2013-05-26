@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="us">
 <head>
@@ -5,41 +6,51 @@
 	<title>AppBoard</title>
 	
 <!--css for jQuery pepper theme-->
-	<link href="../css/pepper-grinder/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css">
+	<link href="{% static "css/pepper-grinder/jquery-ui-1.10.2.custom.css" %}" rel="stylesheet" type="text/css">
 	
 <!--script for jQuery and widgets-->
-	<script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
-	<script type="text/javascript" src="../js/jquery-ui-1.10.2.custom.js" ></script>
-	<script type="text/javascript" src="../development-bundle/ui/jquery.ui.widget.js"></script>
-	<script type="text/javascript" src="../development-bundle/ui/jquery.ui.tabs.js"></script>
-	<script type="text/javascript" src="../development-bundle/ui/jquery.ui.core.js"></script>
-	<script type="text/javascript" src="../development-bundle/ui/jquery.ui.button.js"></script>
-	<script type="text/javascript" src="../development-bundle/ui/jquery.ui.autocomplete.js"></script>
+
+	
+	
+	
+	<script type="text/javascript" src="{% static "js/jquery-1.9.1.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jquery-ui-1.10.2.custom.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jquery.ui.widget.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jquery.ui.tabs.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jquery.ui.core.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jquery.ui.button.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jquery.ui.autocomplete.js" %}"></script>
+	
 	
 <!--script for apphouse modularization-->
-	<script type="text/javascript" src="../HomeScript.js"></script>
+	<script type="text/javascript" src="{% static "js/HomeScript.js" %}"></script>
 	
 <!--css for apphouse modularization-->
-	<link href="../HomeStyle.css" rel="stylesheet" type="text/css">
+	<link href="{% static "css/HomeStyle.css" %}" rel="stylesheet" type="text/css">
 	
 <!--script for logics-->
-	<script type="text/javascript" src="../logics/addthreeno.js"></script>
-	<script type="text/javascript" src="../logics/addtwono.js"></script>
-	<script type="text/javascript" src="../logics/camcapture.js"></script>
-	<script type="text/javascript" src="../logics/dividetwono.js"></script>
-	<script type="text/javascript" src="../logics/helloworld.js"></script>
-	<script type="text/javascript" src="../logics/himsg.js"></script>
-	<script type="text/javascript" src="../logics/multiplytwono.js"></script>
-	<script type="text/javascript" src="../logics/startriangle.js"></script>
-	<script type="text/javascript" src="../logics/strcon.js"></script>
-	<script type="text/javascript" src="../logics/strconreturn.js"></script>
-	<script type="text/javascript" src="../logics/tbinsert.js"></script>
-	<script type="text/javascript" src="../logics/select.js"></script>
+	<script type="text/javascript" src="{% static "js/logics/addthreeno.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/addtwono.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/camcapture.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/dividetwono.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/helloworld.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/himsg.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/multiplytwono.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/startriangle.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/strcon.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/strconreturn.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/tbinsert.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/select.js" %}"></script>
 	
 <!--script and style for jQuery context menu plugin-->	
-	<script src="../src/jquery.ui.position.js" type="text/javascript"></script>
-    <script src="../src/jquery.contextMenu.js" type="text/javascript"></script>
-    <link href="../src/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+
+	
+	
+	<script src="{% static "js/jquery.ui.position.js" %}" type="text/javascript"></script>
+    <script src="{% static "js/jquery.contextMenu.js" %}" type="text/javascript"></script>
+
+    <link href="{% static "css/jquery.contextMenu.css" %}" rel="stylesheet" type="text/css"/>
+	
 	
 <!--script for javascript mouseposition used for documentation-->	
 	<script type = "text/javascript">
@@ -91,17 +102,17 @@
 		var rid = $("#radio :radio:checked").attr('id');
 		if(rid == 'radio1')
 		{
-		document.getElementById('admodetab').style.backgroundImage = "url('images/android.png')";
+		document.getElementById('admodetab').style.backgroundImage = "url('/static/images/android.png')";
 		document.getElementById("adroppable").style.color="white";
 		}
 		else if(rid == 'radio2')
 		{
-		document.getElementById('admodetab').style.backgroundImage = "url('images/iphone.png')";
+		document.getElementById('admodetab').style.backgroundImage = "url('/static/images/iphone.png')";
 		document.getElementById("adroppable").style.color="black";
 		}
 		else
 		{
-		document.getElementById('admodetab').style.backgroundImage = "url('images/windows.png')";
+		document.getElementById('admodetab').style.backgroundImage = "url('/static/images/windows.png')";
 		document.getElementById("adroppable").style.color="white";
 		}
 		});
@@ -114,31 +125,31 @@
 		if(rid == 'radiopencil')
 		{
 		var body = document.getElementsByTagName('body')[0];
-		body.style.backgroundImage = 'url(images/back.jpg)';
+		body.style.backgroundImage = 'url(/static/images/back.jpg)';
 		document.getElementById("footer").style.color="black";
 		}
 		else if(rid == 'radioteddy')
 		{
 		var body = document.getElementsByTagName('body')[0];
-		body.style.backgroundImage = 'url(images/teddy.jpg)';
+		body.style.backgroundImage = 'url(/static/images/teddy.jpg)';
 		document.getElementById("footer").style.color="black";
 		}
 		else if(rid == 'radiosnow')
 		{
 		var body = document.getElementsByTagName('body')[0];
-		body.style.backgroundImage = 'url(images/snow.jpg)';
+		body.style.backgroundImage = 'url(/static/images/snow.jpg)';
 		document.getElementById("footer").style.color="white";
 		}
 		else if(rid == 'radiostars')
 		{
 		var body = document.getElementsByTagName('body')[0];
-		body.style.backgroundImage = 'url(images/stars.jpg)';
+		body.style.backgroundImage = 'url(/static/images/stars.jpg)';
 		document.getElementById("footer").style.color="white";
 		}
 		else if(rid == 'radiothunder')
 		{
 		var body = document.getElementsByTagName('body')[0];
-		body.style.backgroundImage = 'url(images/thunder.gif)';
+		body.style.backgroundImage = 'url(/static/images/thunder.gif)';
 		document.getElementById("footer").style.color="white";
 		}
 		});
@@ -427,7 +438,7 @@
 	padding: 35px;
 	width: 280px;
 	height: 190px;
-	background-image: url('images/popupform.png');
+	background-image: url('/static/images/popupform.png');
 	}
 	
 	</style>
@@ -550,12 +561,13 @@
 </head>
 
 <!--call page load to clear generated file upon refresh-->
-<body onload="pageload()" background="images\back.jpg">
+
+<body onload="pageload()" background="{% static "images/back.jpg" %}">
 
 <!--table displaying heading and mode controls-->
 	<table border='0' width='100%'>
 	<tr>
-	<td width="6%"><img src='images\logo.png' height="65px" width="80px"></td>
+	<td width="6%"><img src="{% static "images\logo.png" %}" height="65px" width="80px"></td>
 	<td width="20%">
 	<h1 style="font-family:arial;color:white;">Welcome to AppBoard !</h1>
 	</td>
@@ -599,24 +611,24 @@
 	<h3>Control</h3>
 	<div id="control">
 		<ul>
-			<li><div id="inptb1"><img src="images\toolbar\textbox.png"/></div></li>
-			<li><div id="brtb1"><img src="images\toolbar\break.png"/></div></li>
-			<li><div id="btntb1"><img src="images\toolbar\button.png"/></div></li>
-			<li><div id="rdtb1"><img src="images\toolbar\radio.png"/></div></li>
-			<li><div id="chbtb1"><img src="images\toolbar\checkbox.png"/></div></li>
-			<li><div id="cmbtb1"><img src="images\toolbar\combo.png"/></div></li>
-			<li><div id="lbltb1"><img src="images\toolbar\label.png"/></div></li>
-			<li><div id="pwdtb1"><img src="images\toolbar\password.png"/><div></li>
-			<li><div id="clntb1"><img src="images\toolbar\calendar.png"/></div></li>
-			<li><div id="pgbtb1"><img src="images\toolbar\progress.png"/></div></li>
-			<li><div id="imgtb1"><img src="images\toolbar\image.png"/></div></li>
-			<li><div id="divtb1"><img src="images\toolbar\div.png"/></div></li>
-			<li><div id="tabtb1"><img src="images\toolbar\table.png"/></div></li>
-			<li><div id="dbstb1"><img src="images\toolbar\database.png"/></div></li>
-			<li><div id="seltb1"><img src="images\toolbar\select.png"/></div></li>
-			<li><div id="instb1"><img src="images\toolbar\insert.png"/></div></li>
-			<li><div id="updtb1"><img src="images\toolbar\update.png"/></div></li>
-			<li><div id="deltb1"><img src="images\toolbar\delete.png"/></div></li>
+			<li><div id="inptb1"><img src="{% static "images/toolbar/textbox.png" %}"/></div></li>
+			<li><div id="brtb1"><img src="{% static "images/toolbar/break.png" %}"/></div></li>
+			<li><div id="btntb1"><img src="{% static "images/toolbar/button.png" %}"/></div></li>
+			<li><div id="rdtb1"><img src="{% static "images/toolbar/radio.png" %}"/></div></li>
+			<li><div id="chbtb1"><img src="{% static "images/toolbar/checkbox.png" %}"/></div></li>
+			<li><div id="cmbtb1"><img src="{% static "images/toolbar/combo.png" %}"/></div></li>
+			<li><div id="lbltb1"><img src="{% static "images/toolbar/label.png" %}"/></div></li>
+			<li><div id="pwdtb1"><img src="{% static "images/toolbar/password.png" %}"/><div></li>
+			<li><div id="clntb1"><img src="{% static "images/toolbar/calendar.png" %}"/></div></li>
+			<li><div id="pgbtb1"><img src="{% static "images/toolbar/progress.png" %}"/></div></li>
+			<li><div id="imgtb1"><img src="{% static "images/toolbar/image.png" %}"/></div></li>
+			<li><div id="divtb1"><img src="{% static "images/toolbar/div.png" %}"/></div></li>
+			<li><div id="tabtb1"><img src="{% static "images/toolbar/table.png" %}"/></div></li>
+			<li><div id="dbstb1"><img src="{% static "images/toolbar/database.png" %}"/></div></li>
+			<li><div id="seltb1"><img src="{% static "images/toolbar/select.png" %}"/></div></li>
+			<li><div id="instb1"><img src="{% static "images/toolbar/insert.png" %}"/></div></li>
+			<li><div id="updtb1"><img src="{% static "images/toolbar/update.png" %}"/></div></li>
+			<li><div id="deltb1"><img src="{% static "images/toolbar/delete.png" %}"/></div></li>
 		</ul>
 	</div>
 	<h3>Logic</h3>

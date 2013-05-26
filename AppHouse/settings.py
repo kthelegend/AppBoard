@@ -96,6 +96,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+                
+
 DATABASE_ENGINE = 'sqlite3'
 DATABASE_NAME = 'apphousedb'
 DATABASE_USER = ''
