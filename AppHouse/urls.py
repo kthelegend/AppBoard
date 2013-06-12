@@ -3,6 +3,7 @@ from AppHouseBackend.views import android_page
 from AppHouseBackend.views import main_page
 from AppHouseBackend.views import page_load
 from AppHouseBackend.views import android_prop
+from AppHouseBackend.views import update_event
 from AppHouseBackend.views import android_code
 from AppHouseBackend.views import python_code
 from AppHouseBackend.views import android_logic
@@ -15,6 +16,8 @@ from AppHouseBackend.views import get_columns
 from AppHouseBackend.views import create_dbwithtable
 from AppHouseBackend.views import insert_table
 from AppHouseBackend.views import select_table
+from AppHouseBackend.views import create_zip
+
 from django.contrib import admin
 
 from django.views.generic import TemplateView
@@ -38,6 +41,8 @@ urlpatterns = patterns('',
 
 
      (r'^android/',android_page),
+     (r'^addevent/',update_event),
+     (r'^createzip/',create_zip),
      (r'^getids/',get_ids),                 
      (r'^pageload/',page_load),
      (r'^remandroid/',android_remove),

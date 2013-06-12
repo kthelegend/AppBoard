@@ -1,0 +1,17 @@
+<!DOCTYPE HTML> <html> <head> <title>PhoneGap</title> 
+<script type="text/javascript">
+function upload()
+{
+
+WshShell = new ActiveXObject("WScript.Shell");
+WshShell.Run("explorer file:///C:\\upload.bat",1,true);
+
+
+//document.location.href='upload.bat';
+//document.location.href='https://build.phonegap.com/api/v1/apps/426182/android?auth_token=LZqimsn9qkWNRScUjrCk';
+//var objShell = new ActiveXObject("Shell.Application");
+//objShell.ShellExecute("cmd.exe", "cd C: C:\\cd ", "C:\\WINDOWS\\system32", "open", 1);
+//alert('hi');
+}
+</script>
+ </head> <body> <h1><input type="button" value="hello" onclick="upload()"/></h1> </body> </html>

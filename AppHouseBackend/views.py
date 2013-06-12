@@ -6,6 +6,7 @@ from xml.etree.ElementTree import Element
 from django.utils import simplejson
 import sqlite3
 import json
+import zipfile
 
 # Create your views here.
 
@@ -18,6 +19,13 @@ def get_ids(request):
    json = simplejson.dumps(ids)
    return HttpResponse(json, mimetype='application/json')
    
+def create_zip(request):
+   zf = zipfile.ZipFile('C:/AppHouse/MyApp.zip',"w")
+   zf.write('c:/AppHouse/index.html')
+   zf.write('c:/AppHouse/logics.js')
+   zf.close()
+   return HttpResponse("success")
+
 
 
 def main_page(request):
@@ -28,7 +36,7 @@ def page_load(request):
    f = open('./androidsource.txt',"r+" )
    lines = f.readlines()
    f.close()
-   f = open('./android.txt',"wb" )
+   f = open('./index.html',"wb" )
    f.writelines(lines)
    f.close()
    tree = ET.parse('./android.xml')
@@ -36,9 +44,15 @@ def page_load(request):
    root.clear()
    tree.write('./android.xml')
    code = 'Hello World'
-   f = open('./logics.txt',"wb")
+   f = open('./logics.js',"wb")
    free = []
    logicmark = "\n<!---append logic here---!>\n"
+   free.append(logicmark)
+   f.writelines(free)
+   f.close()
+   f = open('./python.txt',"wb")
+   free = []
+   logicmark = "\n<!---append python code here---!>\n"
    free.append(logicmark)
    f.writelines(free)
    f.close()
@@ -49,10 +63,10 @@ def save_page(request):
    return HttpResponse(code)
 
 def update_andprop(request):
-    f = open('./android.txt',"r+")
+    f = open('./index.html',"r+")
     lines = f.readlines()
     f.close()
-    f = open('./android.txt',"wb")
+    f = open('./index.html',"wb")
     tree = ET.parse('./android.xml')
     root = tree.getroot()
     xpstr = ".//*[@id='" + request.GET['id'] + "']"
@@ -122,6 +136,8 @@ def android_page(request):
        ty = 'helloworld'
     elif ty.find('addtwono')>-1:
        ty = 'addtwono'
+    elif ty.find('subtwono')>-1:
+       ty = 'subtwono'
     elif ty.find('addthreeno')>-1:
        ty = 'addthreeno'
     elif ty.find('table')>-1:
@@ -129,7 +145,7 @@ def android_page(request):
     elif ty.find('div')>-1:
        ty = 'div'
        
-    f = open('./android.txt',"r+" )
+    f = open('./index.html',"r+" )
     lines = f.readlines()
     f.close()
 
@@ -194,7 +210,7 @@ def android_page(request):
         tag = "<p id = '" + 'hw'+str(count) + "'>Hello World Logic</p>\n"
         #tag = ""
         logicmark = "<!---append logic here---!>\n"
-        f = open('./logics.txt',"r+")
+        f = open('./logics.js',"r+")
         logiclines = f.readlines()
         f.close()
         f = open('./logics/helloworld.txt',"r+")
@@ -204,7 +220,7 @@ def android_page(request):
         hwlines.reverse()
         for el in hwlines:
            logiclines.insert(lmindex,el + "\n")
-        f = open('./logics.txt',"wb")
+        f = open('./logics.js',"wb")
         f.writelines(logiclines)
         f.close()
     elif elemtype == 'addtwono':
@@ -212,7 +228,7 @@ def android_page(request):
         uiid = 'a2'+str(count)
         tag = "<p id = '" + 'a2'+str(count) + "'>Add two number Logic</p>\n"
         logicmark = "<!---append logic here---!>\n"
-        f = open('./logics.txt',"r+")
+        f = open('./logics.js',"r+")
         logiclines = f.readlines()
         f.close()
         f = open('./logics/addtwono.txt',"r+")
@@ -222,7 +238,25 @@ def android_page(request):
         hwlines.reverse()
         for el in hwlines:
            logiclines.insert(lmindex,el +  "\n")
-        f = open('./logics.txt',"wb")
+        f = open('./logics.js',"wb")
+        f.writelines(logiclines)
+        f.close()
+    elif elemtype == 'subtwono':
+        ui.set('id','s2'+str(count))
+        uiid = 's2'+str(count)
+        tag = "<p id = '" + 's2'+str(count) + "'>Sub two number Logic</p>\n"
+        logicmark = "<!---append logic here---!>\n"
+        f = open('./logics.js',"r+")
+        logiclines = f.readlines()
+        f.close()
+        f = open('./logics/subtwono.txt',"r+")
+        hwlines = f.readlines()
+        f.close()
+        lmindex = logiclines.index(logicmark)
+        hwlines.reverse()
+        for el in hwlines:
+           logiclines.insert(lmindex,el +  "\n")
+        f = open('./logics.js',"wb")
         f.writelines(logiclines)
         f.close()
     elif elemtype == 'addthreeno':
@@ -230,7 +264,7 @@ def android_page(request):
         uiid = 'a3'+str(count)
         tag = "<p id = '" + 'a3'+str(count) + "'>Add three number Logic</p>\n"
         logicmark = "<!---append logic here---!>\n"
-        f = open('./logics.txt',"r+")
+        f = open('./logics.js',"r+")
         logiclines = f.readlines()
         f.close()
         f = open('./logics/addthreeno.txt',"r+")
@@ -240,7 +274,7 @@ def android_page(request):
         hwlines.reverse()
         for el in hwlines:
            logiclines.insert(lmindex,el +  "\n")
-        f = open('./logics.txt',"wb")
+        f = open('./logics.js',"wb")
         f.writelines(logiclines)
         f.close()
 
@@ -258,18 +292,41 @@ def android_page(request):
     #content = tag + ' ' + bookmark
     #string = code.replace(bookmark,content)
     
-    f = open('C:/AppHouse/android.txt',"wb")
+    f = open('C:/AppHouse/index.html',"wb")
     f.writelines(lines)
     f.close()
 
-    f = open('./android.txt',"r+" )
+    f = open('./index.html',"r+" )
     code = f.read()
     f.close()
        
     return HttpResponse(uiid)
 
+def update_event(request):
+    f = open('./index.html',"r+")
+    elem = request.GET['elem']
+    elemevent = elem.split("-")
+    eventelem = elemevent[0]
+    eventname = elemevent[1]
+    lines = f.readlines()
+    f.close()
+    count = 0
+    for el in lines:
+       count = count + 1
+       if el.find(eventelem) > -1:
+          tag = el
+          index = count
+    tag = tag[:-2]
+    event = "onclick = '" + eventname + "' "
+    newtag = tag + " " + event + " >\n"
+    lines.pop(index-1)
+    lines.insert(index,newtag)
+    f = open('./index.html',"wb")
+    f.writelines(lines)
+    f.close()
+   
 def android_remove(request):
-    f = open('./android.txt',"r+")
+    f = open('./index.html',"r+")
     delelem = request.GET['elem']
     lines = f.readlines()
     f.close()
@@ -280,7 +337,7 @@ def android_remove(request):
        if line.find(delelem)>-1:
           ind = count - 1
           lines.pop(ind)
-    f = open('./android.txt',"wb")
+    f = open('./index.html',"wb")
     f.writelines(lines)
     f.close()
 
@@ -293,12 +350,12 @@ def android_remove(request):
     return HttpResponse(ind)
 
 def android_code(request):
-    f = open('./android.txt',"r+")
+    f = open('./index.html',"r+")
     code = f.read()
     return HttpResponse(code)
 
 def android_logic(request):
-    f = open('./logics.txt',"r+")
+    f = open('./logics.js',"r+")
     code = f.read()
     return HttpResponse(code)
 
@@ -528,7 +585,7 @@ def get_json(request):
 
 
 def write_android(type,id):
-    f = open('./android.txt',"r+")
+    f = open('./index.html',"r+")
     code = f.read()
     f.close()
 
@@ -551,7 +608,7 @@ def write_android(type,id):
     bookmark = " <!---append code here---!> " 
     st = content + bookmark
     
-    f = open('./android.txt',"wb" )
+    f = open('./index.html',"wb" )
     newstring = code.replace(bookmark,st)
     f.write(newstring)
     #f.write('code')

@@ -9,11 +9,9 @@
 	<link href="{% static "css/pepper-grinder/jquery-ui-1.10.2.custom.css" %}" rel="stylesheet" type="text/css">
 	
 <!--script for jQuery and widgets-->
-
-	
-	
 	
 	<script type="text/javascript" src="{% static "js/jquery-1.9.1.js" %}"></script>
+	
 	<script type="text/javascript" src="{% static "js/jquery-ui-1.10.2.custom.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/jquery.ui.widget.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/jquery.ui.tabs.js" %}"></script>
@@ -24,6 +22,7 @@
 	
 <!--script for apphouse modularization-->
 	<script type="text/javascript" src="{% static "js/HomeScript.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jszip.js" %}"></script>
 	
 <!--css for apphouse modularization-->
 	<link href="{% static "css/HomeStyle.css" %}" rel="stylesheet" type="text/css">
@@ -31,6 +30,7 @@
 <!--script for logics-->
 	<script type="text/javascript" src="{% static "js/logics/addthreeno.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/logics/addtwono.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/subtwono.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/logics/camcapture.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/logics/dividetwono.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/logics/helloworld.js" %}"></script>
@@ -44,11 +44,8 @@
 	
 <!--script and style for jQuery context menu plugin-->	
 
-	
-	
 	<script src="{% static "js/jquery.ui.position.js" %}" type="text/javascript"></script>
     <script src="{% static "js/jquery.contextMenu.js" %}" type="text/javascript"></script>
-
     <link href="{% static "css/jquery.contextMenu.css" %}" rel="stylesheet" type="text/css"/>
 	
 	
@@ -61,8 +58,10 @@
 		var tempY = 0
 			function getMouseXY(e) {
 				if (IE) { // grab the x-y pos.s if browser is IE
+				
 				tempX = event.clientX + document.body.scrollLeft
 				tempY = event.clientY + document.body.scrollTop
+				
 				} else {  // grab the x-y pos.s if browser is NS
 				tempX = e.pageX
 				tempY = e.pageY
@@ -96,6 +95,28 @@
 		}
      	});
 			
+		//code for changing the UI Style
+		$("#UIradio").buttonset();
+		$("#UIradio input").bind('click',function(){
+		var rid = $("#UIradio :radio:checked").attr('id');
+		if(rid == 'UIradio1')
+		{
+		
+		$( ".appboarduielem" ).button( "destroy" );
+		
+		}
+		else if(rid == 'UIradio2')
+		{
+		$( ".appboarduielem" )
+			.button();	
+		}
+		else
+		{
+		
+		}
+		});
+		
+		
 		//code for changing the layout of work area
 		$( "#radio" ).buttonset();
 		$("#radio input").bind('click',function(){
@@ -189,7 +210,7 @@
 		}
 		}
 	
-		//function to clear the generated text file
+		//function to clear the generated code file
 		function pageload()
 		{
 		window.count = 0;
@@ -374,6 +395,19 @@
 		});
 		}
 		$(window).bind('resize',a2positionPopup);
+		
+		//sub two number
+		function s2positionPopup(){
+		if(!$("#subtwono_form").is(':visible')){
+		return;
+		}
+		$("#subtwono_form").css({
+		left: ($(window).width() - $('#subtwono_form').width()) / 2,
+		top: ($(window).width() - $('#subtwono_form').width()) / 7,
+		position:'absolute'
+		});
+		}
+		$(window).bind('resize',s2positionPopup);
 	
 		//add three numbers
 		function a3positionPopup(){
@@ -401,51 +435,48 @@
 		}
 		$(window).bind('resize',dbpositionPopup);
 	
-	//position the logic bind popup at the center of the page
-	function tbinsertPopup(){
-	if(!$("#tbinsert_form").is(':visible')){
-	return;
-	}
-	$("#tbinsert_form").css({
-	left: ($(window).width() - $('#tbinsert_form').width()) / 2,
-	top: ($(window).width() - $('#tbinsert_form').width()) / 7,
-	position:'absolute'
-	});
-	}
-	//maintain the popup at center of the page when browser resized
-	$(window).bind('resize',tbinsertPopup);
-	
-	
-	//position the logic bind popup at the center of the page
-	function selectpositionPopup(){
-	if(!$("#select_form").is(':visible')){
-	return;
-	}
-	$("#select_form").css({
-	left: ($(window).width() - $('#select_form').width()) / 2,
-	top: ($(window).width() - $('#select_form').width()) / 7,
-	position:'absolute'
-	});
-	}
-	//maintain the popup at center of the page when browser resized
-	$(window).bind('resize',selectpositionPopup);
+		//insert in to database table
+		function tbinsertPopup(){
+		if(!$("#tbinsert_form").is(':visible')){
+		return;
+		}
+		$("#tbinsert_form").css({
+		left: ($(window).width() - $('#tbinsert_form').width()) / 2,
+		top: ($(window).width() - $('#tbinsert_form').width()) / 7,
+		position:'absolute'
+		});
+		}
+		//maintain the popup at center of the page when browser resized
+		$(window).bind('resize',tbinsertPopup);
+		
+		//select (read) from the database table
+		function selectpositionPopup(){
+		if(!$("#select_form").is(':visible')){
+		return;
+		}
+		$("#select_form").css({
+		left: ($(window).width() - $('#select_form').width()) / 2,
+		top: ($(window).width() - $('#select_form').width()) / 7,
+		position:'absolute'
+		});
+		}
+		//maintain the popup at center of the page when browser resized
+		$(window).bind('resize',selectpositionPopup);
 	</script>
 	
 <!--style for logic bind popup-->
 	<style>
-	#documentation_form,#overlay_form,#helloworld_form,#addtwono_form,#addthreeno_form,#database_form,#tbinsert_form,#select_form{
+	#documentation_form,#overlay_form,#helloworld_form,#addtwono_form,#subtwono_form,#addthreeno_form,#database_form,#tbinsert_form,#select_form{
 	position: absolute;
 	padding: 35px;
 	width: 280px;
 	height: 190px;
 	background-image: url('/static/images/popupform.png');
 	}
-	
 	</style>
 	
 
-	
-<!--style for logic bind popup-->
+<!--style for buttons like save logic , properties, and toolbar on the top-->
 	<script>
 	$(function() {
 	
@@ -489,6 +520,43 @@
 		})
 		.click(function() {	});
 		
+		$( "#ship" ).button({
+			text: false,
+			icons: {
+				primary: "ui-icon-cart"
+			}
+		})
+		.click(function() {	
+		create_zip();
+		
+		setTimeout(function(){
+		
+			$.ajax({
+                    url: "https://build.phonegap.com/api/v1/me?auth_token=LZqimsn9qkWNRScUjrCk",
+                    dataType: 'jsonp',
+                    success: function(data){
+					var appid = data.apps.all[0].id;
+                       var loc = 'https://build.phonegap.com/api/v1/apps/' + appid + '/android?auth_token=LZqimsn9qkWNRScUjrCk'
+		document.location.href=loc;
+		window.appid = appid;
+                        } });
+		
+		
+			$.ajax({type: "DELETE",
+                    url: "https://build.phonegap.com/api/v1/apps/" + window.appid + "?auth_token=LZqimsn9qkWNRScUjrCk",
+                    dataType: 'jsonp',
+                    success: function(data){} });
+		
+		},15000);
+		
+		});
+		
+		
+		
+		
+		
+		
+		
 		$( "#play" ).button({
 			text: false,
 			icons: {
@@ -520,14 +588,46 @@
 	});
 	</script>	
 	
-	<script>
+	<script type="text/javascript">
 	
-	
-	
+	function create_zip()
+	{
 
+		czhttp = new XMLHttpRequest();
+		if(window.XMLHttpRequest) {
+		czhttp = new XMLHttpRequest();
+		}
+		else if(window.ActiveXObject){
+		czhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		var url = "http://localhost:8000/createzip/";
+		czhttp.open("GET",url,true);
+		czhttp.onreadystatechange=processcreatezip;
+		czhttp.send(null);
+	
+	}
+	
+	function processcreatezip()
+		{
+		if (czhttp.readyState == 4 && czhttp.status == 200) {
+		//document.location.href='/static/js/upload.bat';
+		WshShell = new ActiveXObject("WScript.Shell");
+//WshShell.Run("explorer file:///static/js/upload.bat",1,true);
+WshShell.Run("explorer file:///C:\\upload.bat",1,true);
+		setTimeout(function(){phonegap()},10000);
+		} else {
+		}
+		}
+		
+		function phonegap()
+		{
+	var dummy;
+	dummy = dummy + 1;
+		}
+	
 	</script>
 	
-<!--style for context menu-->	
+<!--script for context menu-->	
 	<script type="text/javascript" class="showcase">
 	$(function(){
     $.contextMenu({
@@ -553,10 +653,13 @@
         }
     });
     $('.context-menu-one').on('click', function(e){
-        console.log('clicked', this);
+      //  console.log('clicked', this);
     })
 	});
     </script>
+	
+	
+	
 
 </head>
 
@@ -577,6 +680,8 @@
 	<button id="refresh">refresh</button></td><td width="2%">
 	<button id="save">save</button></td><td width="2%">
 	<button id="delete">delete</button></td><td width="13%">
+	<button id="ship">Ship</button></td><td width="13%">
+	
 	<div id="radio" align="right">
 		<input type="radio" id="radio1" name="radio" /><label for="radio1">Android</label>
 		<input type="radio" id="radio2" name="radio"  /><label for="radio2">iPhone</label>
@@ -639,6 +744,7 @@
 		<li><div id="strcon">String Concatination</div></li>
 		<li><div id="strconreturn">String Concatination with return</div></li>
 		<li><div id="addtwono">Add two numbers</div></li>
+		<li><div id="subtwono">Subtract two numbers</div></li>
 		<li><div id="addthreeno">Add three numbers</div></li>
 		<li><div id="dividetwono">Divide two numbers</div></li>
 		<li><div id="multiplytwono">Multiply two numbers</div></li>
@@ -659,13 +765,24 @@
 				<li><a href="#admodetab">Design</a></li>
 				<li><a href="#acmodetab">Code.html</a></li>
 				<li><a href="#almodetab">Logic.js</a></li>
+				<li><a href="#juiamodetab">jQuery UI</a></li>
+				
 				<li><a href="#phmodetab">Logic.php</a></li>
 				<li><a href="#pymodetab">Logic.py</a></li>
-				<li><a href="#cmodetab">Logic.c</a></li>
-				<li><a href="#jamodetab">Logic.java</a></li>
+				
+				<li><a href="#jamodetab">Logic.jsp</a></li>
+				
 				
 			</ul>
 			<div id="admodetab">
+			
+				<div id="UIradio" align="left">
+					<input type="radio" id="UIradio1" name="radio" /><label for="UIradio1">Html</label>
+					<input type="radio" id="UIradio2" name="radio"  /><label for="UIradio2">jQuery UI</label>
+					
+				</div>
+			
+			
 				<div id="adroppable" class="context-menu-one box menu-1"></div>
 			</div>
 			<div id="acmodetab">
@@ -680,12 +797,15 @@
 			<div id="pymodetab">
 				<textarea id="pylogic" width="95%" onselect="getdocumentation()" readonly>logic</textarea>
 			</div>
-			<div id="cmodetab">
-				<textarea id="clogic" width="95%" onselect="getdocumentation()" readonly>logic</textarea>
-			</div>
+			
 			<div id="jamodetab">
 				<textarea id="jalogic" width="95%" onselect="getdocumentation()" readonly>logic</textarea>
 			</div>
+			<div id="juiamodetab">
+				<textarea id="juialogic" width="95%" onselect="getdocumentation()" readonly>logic</textarea>
+			</div>
+			
+			
 			
 		</div>
 	</div>
@@ -743,9 +863,11 @@
 	 <div id='doccontent'></div>
 	 <input type="button" value="close" id="docclose">
 	</form>
+	
+	
 
 <footer align="center" id="footer">
-<h2>Copyright © 2013 Nevets, Inc. </h2>
+<h2>Copyright © 2013 Nevets, Inc. <img src="{% static "images\Nevets.ico" %}" height="28px"/></h2>
 </footer>
 
 </body>

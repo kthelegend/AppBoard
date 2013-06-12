@@ -114,7 +114,13 @@ $("#strcon").draggable({
            appendTo: "body",
            helper: 'clone',
            cancel: false});
+		   
 $("#addtwono").draggable({
+           appendTo: "body",
+           helper: 'clone',
+           cancel: false});
+		   
+$("#subtwono").draggable({
            appendTo: "body",
            helper: 'clone',
            cancel: false});
@@ -211,6 +217,19 @@ $("#strconreturn").draggable({
 						adduitoxml('addtwono');
 						//killhelloworldlayout();
 						}
+						
+						else if(item_id=='subtwono')
+						{
+						loadsubtwonolayout();
+						get_ids();
+						$("#subtwono_form").fadeIn(1000);
+						s2positionPopup();
+						adduitoxml('subtwono');
+						//killhelloworldlayout();
+						}
+						
+						
+						
 						else if(item_id=='addthreeno')
 						{
 						loadaddthreenolayout();
@@ -330,7 +349,7 @@ lhttp.send(null);
 //call back function for updating the code read from server to the UI textarea
 function logicprocessResult() {
 if (lhttp.readyState == 4 && lhttp.status == 200) {
-alert(lhttp.responseText);
+//alert(lhttp.responseText);
 document.getElementById("alogic").value = lhttp.responseText;
 } else {
 }
@@ -338,7 +357,22 @@ document.getElementById("alogic").value = lhttp.responseText;
 
 
 
+function addeventtoui(elem,ename,param)
+{
 
+aehttp = new XMLHttpRequest();
+if (window.XMLHttpRequest) {
+aehttp = new XMLHttpRequest();
+} else if (window.ActiveXObject) {
+aehttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+//window.count = window.count + 1;
+var url = "http://localhost:8000/addevent/?elem=" + elem+"-"+ename;
+aehttp.open("GET", url, true)
+//axhttp.onreadystatechange=processUI;
+aehttp.send(null);
+
+}
 
 
 
@@ -376,46 +410,49 @@ uiid = axhttp.responseText;
 switch(uiid.substring(0,2))
 {
 case 'tb':
-  $("#adroppable").append("<input type='text' onfocus='myFunction()' id='" + uiid + "'>");
+  $("#adroppable").append("<input type='text' class='appboarduielem' onfocus='myFunction()' id='" + uiid + "'>");
   break;
 case 'br':
-  $("#adroppable").append("<br onfocus='myFunction()' id='" + uiid + "'>");
+  $("#adroppable").append("<br class='appboarduielem' onfocus='myFunction()' id='" + uiid + "'>");
   break;
 case 'bt':
-  $("#adroppable").append("<input type='button' onfocus='myFunction()' id='" + uiid + "'>");
+  $("#adroppable").append("<input type='button' data-role='button' class='appboarduielem' onfocus='myFunction()' id='" + uiid + "'>");
   break;
 case 'ra':
-  $("#adroppable").append("<input type='radio' onfocus='myFunction()' id='" + uiid + "'>");
+  $("#adroppable").append("<input type='radio' class='appboarduielem' onfocus='myFunction()' id='" + uiid + "'>");
   break;
 case 'ch':
-  $("#adroppable").append("<input type='checkbox' onfocus='myFunction()' id='" + uiid + "'>");
+  $("#adroppable").append("<input type='checkbox' class='appboarduielem' onfocus='myFunction()' id='" + uiid + "'>");
   break;
 case 'cm':
-  $("#adroppable").append("<select onfocus='myFunction()' id='" + uiid + "'><option></option></select>");
+  $("#adroppable").append("<select class='appboarduielem' onfocus='myFunction()' id='" + uiid + "'><option></option></select>");
   break;
 case 'lb':
-  $("#adroppable").append("<p onfocus='myFunction()' id='" + uiid + "'>");
+  $("#adroppable").append("<p class='appboarduielem' onfocus='myFunction()' id='" + uiid + "'>");
   break;
 case 'pw':
-  $("#adroppable").append("<input type='password' onfocus='myFunction()' id='" + uiid + "'>");
+  $("#adroppable").append("<input type='password' class='appboarduielem' onfocus='myFunction()' id='" + uiid + "'>");
   break;
 case 'im':
-  $("#adroppable").append("<img src = '' onfocus='myFunction()' id='" + uiid + "'>");
+  $("#adroppable").append("<img src = '' class='appboarduielem' onfocus='myFunction()' id='" + uiid + "'>");
   break;
 case 'hw':
-  $("#adroppable").append("<p id='" + uiid + "'>Hello World Logic</p>");
+  $("#adroppable").append("<p class='appboarduielem' id='" + uiid + "'>Hello World Logic</p>");
   break;
 case 'a2':
-  $("#adroppable").append("<p id='" + uiid + "'>Add Two number Logic</p>");
+  $("#adroppable").append("<p class='appboarduielem' id='" + uiid + "'>Add Two number Logic</p>");
+  break;
+case 's2':
+  $("#adroppable").append("<p class='appboarduielem' id='" + uiid + "'>Sub Two number Logic</p>");
   break;
 case 'a3':
-  $("#adroppable").append("<p id='" + uiid + "'>Add Three number Logic</p>");
+  $("#adroppable").append("<p class='appboarduielem' id='" + uiid + "'>Add Three number Logic</p>");
   break;
 case 'ta':
-  $("#adroppable").append("<table border = '0' id='" + uiid + "'></table>");
+  $("#adroppable").append("<table class='appboarduielem' border = '0' id='" + uiid + "'></table>");
   break;
 case 'dv':
-  $("#adroppable").append("<div id='" + uiid + "'></div>");
+  $("#adroppable").append("<div class='appboarduielem' id='" + uiid + "'></div>");
   break;
 }
 axhttp = null;
@@ -462,6 +499,7 @@ function helloworldbindevent()
 var eventid = document.getElementById('helloworldsel').value;
 						$('#' + eventid).on("click",helloworld);
 						//killhelloworldlayout();
+						addeventtoui(eventid,'helloworld()','');
 }
 
 //function code to load a layout for add two number logic	
@@ -492,6 +530,39 @@ var no1id = document.getElementById('atwono1sel').value;
 var no2id = document.getElementById('atwono2sel').value;
 var resid = document.getElementById('atworessel').value;
 $('#' + eventid).on("click",{ n1id:no1id,n2id:no2id,rid:resid },addtwonocall);
+param = '{ n1id:' + no1id + ',n2id:' + no2id + ',rid:' + resid + '}';
+						addeventtoui(eventid,'addtwonocall('+param+')');
+}
+	
+	
+//function code to load a layout for sub two number logic	
+function loadsubtwonolayout()
+{
+window.logicid[0] = "stwono1sel";
+window.logicid[1] = "stwono2sel";
+window.logicid[2] = "stworessel";
+window.logicid[3] = "stwoactsel";
+
+$("body").append("<form id='subtwono_form' style='display:none'>" + 
+				 "<h2> Sub Two Nos..</h2><br>" +
+				 "<table><tr>" + 
+				 "<td><label>NO1 ID: </label></td><td><select id='stwono1sel'></select></td></tr>" +
+				 "<tr><td><label>NO2 ID: </label></td><td><select id='stwono2sel'></select></td></tr>" + 
+				 "<tr><td><label>Result ID: </label></td><td><select id='stworessel'></select></td></tr>" + 
+				 "<tr><td><label>Action ID: </label></td><td><select id='stwoactsel'></select><br /></td></tr>" + 
+				 "<tr><td><input type='button' value='Bind' id='s2bind' /></td></tr></table>" + 
+				 "</form>");
+				 
+$("#s2bind").click(function(){$("#subtwono_form").fadeOut(500); subtwonobindevent(); });
+}
+	
+function subtwonobindevent()
+{
+var eventid = document.getElementById('stwoactsel').value;
+var no1id = document.getElementById('stwono1sel').value;
+var no2id = document.getElementById('stwono2sel').value;
+var resid = document.getElementById('stworessel').value;
+$('#' + eventid).on("click",{ n1id:no1id,n2id:no2id,rid:resid },subtwonocall);
 						//killhelloworldlayout();
 }
 	

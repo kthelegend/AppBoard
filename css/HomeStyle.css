@@ -10,8 +10,10 @@
 	#alogic{resize: none; width:99.5%; height:600px }
 	#phlogic{resize: none; width:99.5%; height:600px }
 	#pylogic{resize: none; width:99.5%; height:600px }
-	#clogic{resize: none; width:99.5%; height:600px }
+	
 	#jalogic{resize: none; width:99.5%; height:600px }
+	#juialogic{resize: none; width:99.5%; height:600px }
+	#jmobalogic{resize: none; width:99.5%; height:600px }
 	#admodetab{background-image: url('/static/images/android.png');height:600px}
 	#ipdmodetab{background-image: url('/static/images/iphone.png');height:600px}
 	#wdmodetab{background-image: url('/static/images/windows.png');height:600px}

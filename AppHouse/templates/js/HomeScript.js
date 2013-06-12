@@ -119,6 +119,11 @@ $("#addtwono").draggable({
            helper: 'clone',
            cancel: false});
 		   
+$("#subtwono").draggable({
+           appendTo: "body",
+           helper: 'clone',
+           cancel: false});
+		   
 $("#addthreeno").draggable({
            appendTo: "body",
            helper: 'clone',

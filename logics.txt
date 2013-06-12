@@ -1,14 +1,9 @@
 
-function addtwono(no1,no2)
+function helloworld()
 
 {
 
-no3 = parseInt(no1) + parseInt(no2);
-
-return no3;
+alert('Hello WOrld!!!');
 
 }
-
-
-
 <!---append logic here---!>

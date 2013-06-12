@@ -1,1 +1,1 @@
-<android><UI id="tb0" type="text" /><UI id="tb1" type="text" /><UI id="bt0" type="button" /><UI id="tb2" type="text" /><UI id="a20" type="addtwono" /></android>
+<android><UI id="dv0" type="div" /><UI id="bt0" type="button" /></android>
