@@ -10,6 +10,12 @@ import zipfile
 
 # Create your views here.
 
+def save_logic(request):
+   code = request.GET['logic']
+   f = open('./logics.js',"wb")
+   f.write(code)
+   f.close()
+
 def get_ids(request):
    tree = ET.parse('./android.xml')
    root = tree.getroot()
@@ -56,8 +62,15 @@ def page_load(request):
    free.append(logicmark)
    f.writelines(free)
    f.close()
-   return HttpResponse(code)
 
+   tree = ET.parse('./install/logics/logics.xml')
+   root = tree.getroot()
+   idhtml = []
+   for elem in tree.findall('*'):
+      idhtml.append(elem.get('id')+"-"+elem.get('innerhtml'))
+   json = simplejson.dumps(idhtml)
+   return HttpResponse(json, mimetype='application/json')
+ 
 def save_page(request):
    code = 'Hello World'
    return HttpResponse(code)
@@ -74,9 +87,11 @@ def update_andprop(request):
     etype = request.GET['type']
     ename = request.GET['name']
     etext = request.GET['text']
+    eevent = request.GET['event']
     for elem in tree.findall(xpstr):
        elem.set('name',ename)
        elem.set('text',etext)
+       elem.set('event',eevent)
     tree.write('./android.xml')
     count = 0
     for line in lines:
@@ -87,7 +102,7 @@ def update_andprop(request):
 
     if etype == 'button':
         #tag = "<button id = '" eid + "' name = '" + ename + "' text = '" + etext + "'>\n"
-        tag = "<input type = 'button' id = '" + eid + "' name = '" + ename + "' value = '" + etext + "'>\n"
+        tag = "<input type = 'button' id = '" + eid + "' name = '" + ename + "' value = '" + etext + "' onClick=" + eevent +"()" + ">\n"
     elif elemtype == 'br':
         tag = "<br id = '" + eid + "' name = '" + ename + "' text = '" + etext + "'>\n"
     elif elemtype == 'check':
@@ -118,6 +133,12 @@ def android_page(request):
        ty = 'text'
     elif ty.find('button')>-1:
        ty = 'button'
+    elif ty.find('calendar')>-1:
+       ty = 'calendar'
+    elif ty.find('camera')>-1:
+       ty = 'camera'
+    elif ty.find('gallery')>-1:
+       ty = 'gallery'
     elif ty.find('br')>-1:
        ty = 'br'
     elif ty.find('check')>-1:
@@ -176,6 +197,11 @@ def android_page(request):
         ui.set('id','ta'+str(count))
         uiid = 'ta'+str(count)
         tag = "<table border = '0' id = '" + 'ta'+str(count) + "'></table>\n"
+    elif elemtype == 'calendar':
+        ui.set('id','ca'+str(count))
+        uiid = 'ca'+str(count)
+        tag = "<input type = 'text' id = '" + 'ca'+str(count) + "'>\n"
+        datepicker = "$(function() { $( '# " + 'ca'+str(count) + "' ).datepicker(); });"
     elif elemtype == 'check':
         ui.set('id','ch'+str(count))
         uiid = 'ch'+str(count)
@@ -277,6 +303,64 @@ def android_page(request):
         f = open('./logics.js',"wb")
         f.writelines(logiclines)
         f.close()
+    elif elemtype == 'camera':
+        ui.set('id','cp'+str(count))
+        uiid = 'cp'+str(count)
+        tag = "<p id = '" + 'cp'+str(count) + "'>Camera capture</p>\n"
+        logicmark = "<!---append logic here---!>\n"
+        f = open('./logics.js',"r+")
+        logiclines = f.readlines()
+        f.close()
+        f = open('./logics/camcapture.txt',"r+")
+        hwlines = f.readlines()
+        f.close()
+        lmindex = logiclines.index(logicmark)
+        hwlines.reverse()
+        for el in hwlines:
+           logiclines.insert(lmindex,el +  "\n")
+        f = open('./logics.js',"wb")
+        f.writelines(logiclines)
+        f.close()
+    elif elemtype == 'gallery':
+        ui.set('id','ga'+str(count))
+        uiid = 'ga'+str(count)
+        tag = "<p id = '" + 'ga'+str(count) + "'>Load gallery</p>\n"
+        logicmark = "<!---append logic here---!>\n"
+        f = open('./logics.js',"r+")
+        logiclines = f.readlines()
+        f.close()
+        f = open('./logics/gallery.txt',"r+")
+        hwlines = f.readlines()
+        f.close()
+        lmindex = logiclines.index(logicmark)
+        hwlines.reverse()
+        for el in hwlines:
+           logiclines.insert(lmindex,el +  "\n")
+        f = open('./logics.js',"wb")
+        f.writelines(logiclines)
+        f.close()
+    else:
+        ui.set('id',elemtype+str(count))
+        uiid = elemtype+str(count)
+        tag = "<p id = '" + uiid + "'>" + uiid + "</p>\n"
+        logicmark = "<!---append logic here---!>\n"
+        f = open('./logics.js',"r+")
+        logiclines = f.readlines()
+        f.close()
+        filename = elemtype+'.txt'
+        f = open('./logics/' + filename,"r+")
+        hwlines = f.readlines()
+        f.close()
+        lmindex = logiclines.index(logicmark)
+        hwlines.reverse()
+        for el in hwlines:
+           logiclines.insert(lmindex,el +  "\n")
+        f = open('./logics.js',"wb")
+        f.writelines(logiclines)
+        f.close()
+        
+        
+    
 
         
                  
@@ -365,7 +449,7 @@ def python_code(request):
     return HttpResponse(code)
 
 def android_prop(request):
-    settings = {"type": "", "id": ""}
+    settings = {"type": "", "id": "","name": "","text": "","event" : ""}
     tree = ET.parse('./android.xml')
     root = tree.getroot()
     xpstr = ".//*[@id='" + request.GET['elem'] + "']"
@@ -375,6 +459,9 @@ def android_prop(request):
         count = count + 1
         settings['type'] = el.get('type')
         settings['id'] = el.get('id')
+        settings['name'] = el.get('name')
+        settings['text'] = el.get('text')
+        settings['event'] = el.get('event')
         json = simplejson.dumps(settings)
     return HttpResponse(json, mimetype='application/json')
 

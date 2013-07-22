@@ -17,6 +17,7 @@ from AppHouseBackend.views import create_dbwithtable
 from AppHouseBackend.views import insert_table
 from AppHouseBackend.views import select_table
 from AppHouseBackend.views import create_zip
+from AppHouseBackend.views import save_logic
 
 from django.contrib import admin
 
@@ -39,7 +40,7 @@ urlpatterns = patterns('',
                        
      (r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL,'show_indexes': True }),
 
-
+     (r'^savelogic/',save_logic),
      (r'^android/',android_page),
      (r'^addevent/',update_event),
      (r'^createzip/',create_zip),

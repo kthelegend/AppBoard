@@ -10,6 +10,13 @@ $(".focusclass").click(function(){alert('clicked');});
 //making toolbar - controls and logic as accordion
 $( "#toolbar" ).accordion();
 //assign draggable for all controls
+
+$(".selftest").draggable({
+           appendTo: "body",
+           helper: 'clone',
+           cancel: null});
+
+
 $("#inptb1").draggable({
            appendTo: "body",
            helper: 'clone',
@@ -99,6 +106,13 @@ $("#deltb1").draggable({
            appendTo: "body",
            helper: 'clone',
            cancel: false});	
+
+$("#camtb1").draggable({
+           appendTo: "body",
+           helper: 'clone',
+           cancel: false});			   
+		   
+		   
 //assign draggable for all logics		   
 $("#helloworld").draggable({
            appendTo: "body",
@@ -184,7 +198,8 @@ $("#strconreturn").draggable({
 						}
 						else if(item_id=='clntb1')
 						{
-						$(this).append("");
+						adduitoxml('calendar');
+						//$(this).append("");
 						}
 						else if(item_id=='pgbtb1')
 						{
@@ -198,6 +213,12 @@ $("#strconreturn").draggable({
 						{
 						adduitoxml('br');
 						}
+						
+						else if(item_id=='camtb1')
+						{
+						adduitoxml('camera');
+						}
+						
 						else if(item_id=='helloworld')
 						{
 						loadhelloworldlayout();
@@ -206,6 +227,25 @@ $("#strconreturn").draggable({
 						hwpositionPopup();
 						adduitoxml('helloworld');
 						//killhelloworldlayout();
+						}
+						
+						else if(item_id=='capture')
+						{
+						loadcapture();
+						get_ids();
+						$("#capture_form").fadeIn(1000);
+						cappositionPopup();
+						adduitoxml('camera');
+						}
+						
+						else if(item_id=='gallery')
+						{
+						loadgallery();
+						get_ids();
+						$("#gallery_form").fadeIn(1000);
+						galpositionPopup();
+						adduitoxml('gallery');
+						
 						}
 						
 						else if(item_id=='addtwono')
@@ -239,6 +279,22 @@ $("#strconreturn").draggable({
 						adduitoxml('addthreeno');
 						//killhelloworldlayout();
 						}
+						
+						else if(item_id=='dividetwono')
+						{
+						//alert("selftest");
+						loadselftest();
+						//$("#selftest_form").fadeIn(1000);
+						
+						//loadaddthreenolayout();
+						get_ids();
+						$("#selftest_form").fadeIn(1000);
+						//a3positionPopup();
+						selftestpositionPopup();
+						//adduitoxml('addthreeno');
+						
+						}
+						
 						else if(item_id=='dbstb1')
 						{
 						loaddatabaselayout();
@@ -409,6 +465,12 @@ if (axhttp.readyState == 4 && axhttp.status == 200) {
 uiid = axhttp.responseText;
 switch(uiid.substring(0,2))
 {
+case 'cp'://capture
+  $("#adroppable").append("<p id='" + uiid + "'>Camera</p>");
+  break;
+case 'ga'://capture
+  $("#adroppable").append("<p id='" + uiid + "'>Gallery</p>");
+  break;
 case 'tb':
   $("#adroppable").append("<input type='text' class='appboarduielem' onfocus='myFunction()' id='" + uiid + "'>");
   break;
@@ -448,12 +510,17 @@ case 's2':
 case 'a3':
   $("#adroppable").append("<p class='appboarduielem' id='" + uiid + "'>Add Three number Logic</p>");
   break;
-case 'ta':
+case 'ta'://table
   $("#adroppable").append("<table class='appboarduielem' border = '0' id='" + uiid + "'></table>");
   break;
-case 'dv':
+case 'dv'://div
   $("#adroppable").append("<div class='appboarduielem' id='" + uiid + "'></div>");
   break;
+case 'ca'://calender
+  $("#adroppable").append("<input type='text' class='appboarduielem' onfocus='myFunction()' id='" + uiid + "'>");
+  $("#adroppable").append("<script> $(function() { $( '#" + uiid + "' ).datepicker(); }); </script>");
+  break;
+
 }
 axhttp = null;
 } else {
@@ -474,6 +541,66 @@ dhttp.open("GET", url, true)
 //axhttp.onreadystatechange=processUI;
 dhttp.send(null);
 }
+
+
+function loadcapture()
+{
+window.logicid[0] = "capimagesel";
+window.logicid[1] = "capactsel";
+
+$("body").append("<form id='capture_form' style='display:none'>" + 
+				 "<h2> Capture Photo..</h2><br>" +
+				 "<table><tr>" + 
+				 "<td><label>Image ID: </label></td><td><select id='capimagesel'></select></td></tr>" +
+				 "<tr><td><label>Action ID: </label></td><td><select id='capactsel'></select><br /></td></tr>" + 
+				 "<tr><td><input type='button' value='Bind' id='capbind' /></td></tr></table>" + 
+				 "</form>");
+				 
+$("#capbind").click(function(){$("#capture_form").fadeOut(500); capturebindevent(); });
+
+}
+
+function capturebindevent()
+{
+
+var eventid = document.getElementById('capactsel').value;
+var imageid = document.getElementById('capimagesel').value;
+$('#' + eventid).on("click",{ imgid:imageid },capturecall);
+param = '{ imgid:' + imageid + '}';
+						addeventtoui(eventid,'capturecall('+param+')');
+
+}
+
+
+function loadgallery()
+{
+window.logicid[0] = "capimagesel";
+window.logicid[1] = "capactsel";
+
+$("body").append("<form id='gallery_form' style='display:none'>" + 
+				 "<h2> Load Photo..</h2><br>" +
+				 "<table><tr>" + 
+				 "<td><label>Image ID: </label></td><td><select id='capimagesel'></select></td></tr>" +
+				 "<tr><td><label>Action ID: </label></td><td><select id='capactsel'></select><br /></td></tr>" + 
+				 "<tr><td><input type='button' value='Bind' id='capbind' /></td></tr></table>" + 
+				 "</form>");
+				 
+$("#capbind").click(function(){$("#gallery_form").fadeOut(500); gallerybindevent(); });
+
+}
+
+function gallerybindevent()
+{
+
+var eventid = document.getElementById('capactsel').value;
+var imageid = document.getElementById('capimagesel').value;
+$('#' + eventid).on("click",{ imgid:imageid },capturecall);
+param = '{ imgid:' + imageid + '}';
+						addeventtoui(eventid,'gallerycall('+param+')');
+
+}
+
+
 
 
 	
@@ -600,6 +727,52 @@ var resid = document.getElementById('athreeressel').value;
 $('#' + eventid).on("click",{ n1id:no1id,n2id:no2id,n3id:no3id,rid:resid },addthreenocall);
 						//killhelloworldlayout();
 }
+
+
+function loadselftest()
+{
+$("body").append("<form id='selftest_form' style='display:none'>" + 
+				 "<h2> Welcome to selftest..</h2>" +
+				 "<table>" + 
+				 "<tr><td><label><b>Earn more coins and unlock the logics</b></label></td><td><img src='/static/images/gold.png' height='65px' width='80px'/></td></tr>" +
+				 "<tr><td><input type='button' value='Let's take it!' id='selftestbind'/></td></tr>" + 
+				 "</table>" + 
+				 "</form>");
+				 
+logicText = document.getElementById("alogic").value;
+
+var codeText = "<script type='text/javascript'>" + logicText + "</script>";
+
+while(codeText.indexOf("\n")>-1)
+{
+codeText = codeText.replace("\n","");
+}
+try
+{		 
+$("body").append(codeText);
+$("head").append(codeText);
+
+var headID = document.getElementsByTagName("head")[0];         
+var newScript = document.createElement('script');
+newScript.type = 'text/javascript';
+newScript.src = 'http://localhost:8000/static/js/logics.js';
+headID.appendChild(newScript);
+
+
+
+}
+catch(err){
+var headID = document.getElementsByTagName("head")[0];         
+var newScript = document.createElement('script');
+newScript.type = 'text/javascript';
+newScript.src = 'http://localhost:8000/static/js/logics.js';
+headID.appendChild(newScript);
+}
+				 
+$("#selftestbind").click(function(){$("#selftest_form").fadeOut(500); //addthreenobindevent();
+});
+}
+
 
 //function code to load a layout for divide two number logic
 function loaddividetwonolayout()

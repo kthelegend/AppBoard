@@ -1,0 +1,6 @@
+<logics>
+
+<logic name="palindrome" id="palindrome" innerhtml="Palindrome or not"></logic>
+<logic name="armstrong" id="armstrong" innerhtml="Armstrong or not"></logic>
+
+</logics>

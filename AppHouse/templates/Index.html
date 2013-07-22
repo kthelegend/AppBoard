@@ -29,7 +29,7 @@
 	
 <!--script for logics-->
 	<script type="text/javascript" src="{% static "js/logics/addthreeno.js" %}"></script>
-	<script type="text/javascript" src="{% static "js/logics/addtwono.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/logics/addtwono.js" %}"></script> 
 	<script type="text/javascript" src="{% static "js/logics/subtwono.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/logics/camcapture.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/logics/dividetwono.js" %}"></script>
@@ -41,6 +41,8 @@
 	<script type="text/javascript" src="{% static "js/logics/strconreturn.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/logics/tbinsert.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/logics/select.js" %}"></script>
+	
+	<script type="text/javascript" id="insertscript"></script>
 	
 <!--script and style for jQuery context menu plugin-->	
 
@@ -213,6 +215,7 @@
 		//function to clear the generated code file
 		function pageload()
 		{
+		document.getElementById("coincount").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font id='cc' size='18' color='red' align='right'>200!</font> " ;				
 		window.count = 0;
 		window.logicid = [];
 		plhttp = new XMLHttpRequest();
@@ -224,7 +227,34 @@
 		}
 		var url = "http://localhost:8000/pageload/";
 		plhttp.open("GET",url,true)
+		plhttp.onreadystatechange=processlogicsul;
 		plhttp.send(null);
+		}
+		
+		
+		//function to get the logics in that accordin dynamically
+		function processlogicsul()
+		{
+		
+		if (plhttp.readyState == 4 && plhttp.status == 200) {
+	var json = eval('(' + plhttp.responseText +')');
+	$.each(json, function(i, option) { 
+	//$('#tbinssel').append($('<option/>').attr("value", option).text(option));
+	content = option.split("-")
+	
+	var logicengul = document.getElementById("logicenglishul");
+		var iDiv = document.createElement('div');
+		iDiv.id = content[0];
+		iDiv.className = 'block';
+		iDiv.innerHTML = content[1];
+		logicengul.appendChild(iDiv);
+	
+	
+	});
+	} 
+		
+		
+		
 		}
 	
 		//function to get properties of an element up on focus	
@@ -251,6 +281,11 @@
 		var json = eval('(' + phttp.responseText +')');
 		document.getElementById('elemtyp').innerHTML = json.type;
 		document.getElementById('elemid').innerHTML = json.id;
+		document.getElementById('elemname').value = json.name;
+		document.getElementById('elemtext').value = json.text;
+		document.getElementById('elemevent').value = json.event;
+		json = null;
+		phttp.responseText = null;
 		} else {
 		}
 		}
@@ -291,6 +326,12 @@
 		var etype = document.getElementById("elemtyp").innerHTML;
 		var ename = document.getElementById("elemname").value;
 		var etext = document.getElementById("elemtext").value;
+		var eevent = document.getElementById("elemevent").value;
+		if(eevent==""){}
+		else{
+		$('#' + eid).unbind("click");
+		$('#' + eid).on("click",eevent);
+		}
 		document.getElementById(eid).value = etext;
 		uphttp = new XMLHttpRequest();
 		if (window.XMLHttpRequest) {
@@ -298,7 +339,7 @@
 		} else if (window.ActiveXObject) {
 		uphttp = new ActiveXObject("Microsoft.XMLHTTP");
 		}
-		var url = "http://localhost:8000/updateaprop/?id=" + eid + "&type=" + etype + "&name=" + ename + "&text=" + etext;
+		var url = "http://localhost:8000/updateaprop/?id=" + eid + "&type=" + etype + "&name=" + ename + "&text=" + etext + "&event=" + eevent;
 		uphttp.open("GET", url, true)
 		uphttp.send(null);
 		}
@@ -421,6 +462,46 @@
 		});
 		}
 		$(window).bind('resize',a3positionPopup);
+		
+		
+		//selftest
+		function selftestpositionPopup(){
+		if(!$("#selftest_form").is(':visible')){
+		return;
+		}
+		$("#selftest_form").css({
+		left: ($(window).width() - $('#selftest_form').width()) / 2,
+		top: ($(window).width() - $('#selftest_form').width()) / 7,
+		position:'absolute'
+		});
+		}
+		$(window).bind('resize',selftestpositionPopup);
+		
+		//capture
+		function cappositionPopup(){
+		if(!$("#capture_form").is(':visible')){
+		return;
+		}
+		$("#capture_form").css({
+		left: ($(window).width() - $('#capture_form').width()) / 2,
+		top: ($(window).width() - $('#capture_form').width()) / 7,
+		position:'absolute'
+		});
+		}
+		$(window).bind('resize',cappositionPopup);
+		
+		//capture
+		function galpositionPopup(){
+		if(!$("#gallery_form").is(':visible')){
+		return;
+		}
+		$("#gallery_form").css({
+		left: ($(window).width() - $('#gallery_form').width()) / 2,
+		top: ($(window).width() - $('#gallery_form').width()) / 7,
+		position:'absolute'
+		});
+		}
+		$(window).bind('resize',galpositionPopup);
 	
 		//database
 		function dbpositionPopup(){
@@ -466,13 +547,14 @@
 	
 <!--style for logic bind popup-->
 	<style>
-	#documentation_form,#overlay_form,#helloworld_form,#addtwono_form,#subtwono_form,#addthreeno_form,#database_form,#tbinsert_form,#select_form{
+	#documentation_form,#overlay_form,#helloworld_form,#addtwono_form,#subtwono_form,#addthreeno_form,#database_form,#tbinsert_form,#select_form,#selftest_form,#capture_form,#gallery_form{
 	position: absolute;
 	padding: 35px;
 	width: 280px;
 	height: 190px;
 	background-image: url('/static/images/popupform.png');
 	}
+	
 	</style>
 	
 
@@ -510,7 +592,9 @@
 				primary: "ui-icon-disk"
 			}
 		})
-		.click(function() {	document.execCommand('SaveAs',false,'somexml.xml'); });
+		.click(function() {	insertscript();	});
+		
+		
 		
 		$( "#delete" ).button({
 			text: false,
@@ -589,6 +673,11 @@
 	</script>	
 	
 	<script type="text/javascript">
+	
+	function insertscript()
+	{
+	alert('test');
+	}
 	
 	function create_zip()
 	{
@@ -689,6 +778,7 @@ WshShell.Run("explorer file:///C:\\upload.bat",1,true);
 	</div></td>
 	<td align="center" width="40%">
 	
+	
 	<div id="radiotheme" align="right">
 		<input type="radio" id="radiopencil" name="radio" /><label for="radiopencil">Pencil</label>
 		<input type="radio" id="radioteddy" name="radio"  /><label for="radioteddy">Teddy</label>
@@ -729,26 +819,46 @@ WshShell.Run("explorer file:///C:\\upload.bat",1,true);
 			<li><div id="imgtb1"><img src="{% static "images/toolbar/image.png" %}"/></div></li>
 			<li><div id="divtb1"><img src="{% static "images/toolbar/div.png" %}"/></div></li>
 			<li><div id="tabtb1"><img src="{% static "images/toolbar/table.png" %}"/></div></li>
+			<li><div id="camtb1"><img src="{% static "images/toolbar/camera.png" %}"/></div></li>
 			<li><div id="dbstb1"><img src="{% static "images/toolbar/database.png" %}"/></div></li>
 			<li><div id="seltb1"><img src="{% static "images/toolbar/select.png" %}"/></div></li>
 			<li><div id="instb1"><img src="{% static "images/toolbar/insert.png" %}"/></div></li>
 			<li><div id="updtb1"><img src="{% static "images/toolbar/update.png" %}"/></div></li>
 			<li><div id="deltb1"><img src="{% static "images/toolbar/delete.png" %}"/></div></li>
+			
 		</ul>
 	</div>
 	<h3>Logic</h3>
 	<div>
-	<ul>
+	<ul id="logicmathsul">
+		<li><div id="maths"><h1>Maths</h1></div></li>
 		<li><div id="helloworld">Hello World!!</div></li>
 		<li><div id="himsg">Hi Message</div></li>
 		<li><div id="strcon">String Concatination</div></li>
 		<li><div id="strconreturn">String Concatination with return</div></li>
 		<li><div id="addtwono">Add two numbers</div></li>
+		<li><div id="addtwono" class="selftest"> <img src="{% static "images/lockopen.png" %}" height="20" width="20"/><h3 style="display:inline">Add Three numbers</h3> </div></li>
 		<li><div id="subtwono">Subtract two numbers</div></li>
-		<li><div id="addthreeno">Add three numbers</div></li>
-		<li><div id="dividetwono">Divide two numbers</div></li>
-		<li><div id="multiplytwono">Multiply two numbers</div></li>
+		
+		<li><div id="dividetwono" class="selftest"> <img src="{% static "images/lockopen.png" %}" height="20" width="20"/><h3 style="display:inline">Divide two numbers</h3> </div></li>
+		<li><div id="multiplytwono" class="selftest">  <img src="{% static "images/lockclose.png" %}" height="20" width="20"/>  <h3 style="display:inline">Multiply two numbers</h3>  </div></li>
+		<li><div id="addthreeno" class="selftest">  <img src="{% static "images/lockclose.png" %}" height="20" width="20"/>  <h3 style="display:inline">Add three numbers</h3>  </div></li>
 	</ul>
+	
+	<ul id="logicenglishul">
+	<li><div id="english"><h1>English</h1></div></li>
+	</ul>
+	
+	<ul id="logicdrawingul">
+	<li><div id="drawing"><h1>Drawing</h1></div></li>
+	</ul>
+	
+	<ul id="logichardwareul">
+	<li><div id="hardware"><h1>Hardware</h1></div></li>
+	<li><div id="capture" class="selftest">Camera Capture</div></li>
+	<li><div id="gallery" class="selftest">Load gallery</div></li>
+	</ul>
+	
 	</div>
 	</div>
 	
@@ -789,7 +899,7 @@ WshShell.Run("explorer file:///C:\\upload.bat",1,true);
 				<textarea id="acode" width="95%" readonly>code</textarea>
 			</div>
 			<div id="almodetab">
-				<textarea id="alogic" width="95%" onselect="getdocumentation()" readonly>logic</textarea>
+				<textarea id="alogic" width="95%" onselect="getdocumentation()" >logic</textarea>
 			</div>
 			<div id="phmodetab">
 				<textarea id="phlogic" width="95%" onselect="getdocumentation()" readonly>logic</textarea>
@@ -831,6 +941,7 @@ WshShell.Run("explorer file:///C:\\upload.bat",1,true);
 	<tr><td><b>TYPE</b></td><td><div id="elemtyp">type</div></td></tr>
 	<tr><td><b>NAME</b></td><td><input type="text" id="elemname"></input></td></tr>
 	<tr><td><b>TEXT</b></td><td><input type="text" id="elemtext"></input></td></tr>
+	<tr><td><b>EVENT</b></td><td><input type="text" id="elemevent"></input></td></tr>
 	</table>
 	<hr>
 	
@@ -851,10 +962,18 @@ WshShell.Run("explorer file:///C:\\upload.bat",1,true);
 	<div>
 	</div>
 	</div>
+	<br><br><br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<table border="0" id="cointable" background="{% static "images/coin_200.png" %}" height="200px" width="200px">
+	<tr><td><div id="coincount"></div></td></tr>
+	</table>
+	
+	
 	
 	</td>
 	</tr>
 	</table>
+	
+	
 	
 <!--pop up for logic documentation -->
 
@@ -864,11 +983,18 @@ WshShell.Run("explorer file:///C:\\upload.bat",1,true);
 	 <input type="button" value="close" id="docclose">
 	</form>
 	
+
 	
 
 <footer align="center" id="footer">
-<h2>Copyright © 2013 Nevets, Inc. <img src="{% static "images\Nevets.ico" %}" height="28px"/></h2>
+<!--<h2>Copyright © 2013 Nevets, Inc. <img src="{% static "images\Nevets.ico" %}" height="28px"/></h2> -->
 </footer>
+
+<script id="insercode" type="text/javascript">
+function test()
+{}
+
+</script>
 
 </body>
 </html>

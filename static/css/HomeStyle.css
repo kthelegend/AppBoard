@@ -18,4 +18,8 @@
 	#ipdmodetab{background-image: url('/static/images/iphone.png');height:600px}
 	#wdmodetab{background-image: url('/static/images/windows.png');height:600px}
 	#adroppable{position: absolute;width: 26%; height: 440px; padding: 0.5em; float: left; margin-left:340px;margin-top:23px;color:white;}
+	#cc{text-shadow: 0 0 0.2em #87F, 0 0 0.2em #87F,0 0 0.2em #87F}
+	
+	.selftest{color:green;}
+	
 
